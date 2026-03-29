@@ -128,6 +128,47 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
+        /* Form styles */
+        .cta-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cta-form input[type="email"] {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .cta-form input[type="email"]:focus {
+            border-color: #667eea;
+        }
+        
+        .cta-form button {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+        
+        .cta-form button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
         .testimonials {
             background: white;
             border-radius: 12px;
@@ -187,6 +228,15 @@
             .features {
                 grid-template-columns: 1fr;
             }
+            
+            .cta-form {
+                flex-direction: column;
+            }
+            
+            .cta-form input[type="email"] {
+                padding: 15px;
+                border-radius: 30px;
+            }
         }
     </style>
 </head>
@@ -222,7 +272,15 @@
         <section class="cta-section">
             <h2>Ready to Transform Your Website?</h2>
             <p>Get started with a free website audit and see exactly how we can help your business grow online.</p>
-            <a href="#" class="btn">Get My Free Website Audit</a>
+            
+            <form action="https://formspree.io/f/mgvokqyq" method="POST" class="cta-form">
+                <input type="email" name="email" placeholder="Your email address" required>
+                <button type="submit">Get My Free Website Audit</button>
+            </form>
+            
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #666; max-width: 500px;">
+                We'll send you a free website audit report within 24 hours. No spam, ever.
+            </p>
         </section>
         
         <section class="testimonials">
@@ -250,13 +308,23 @@
     </footer>
     
     <script>
-        // Simple form handling for demo purposes
+        // Handle form submission feedback
         document.addEventListener('DOMContentLoaded', function() {
-            const ctaButton = document.querySelector('.cta-section .btn');
-            if (ctaButton) {
-                ctaButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    alert('Thank you for your interest! Please check your email for instructions on how to claim your free website audit. If you don\'t see it, please check your spam folder.');
+            const form = document.querySelector('.cta-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // Don't prevent default - let Formspree handle it
+                    // Show loading state
+                    const submitBtn = form.querySelector('button');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
+                    
+                    // Reset after 3 seconds (Formspree will redirect or show success)
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }, 3000);
                 });
             }
         });
